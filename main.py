@@ -13,9 +13,9 @@ Ogre = Character.Character(name= "Ogre", movementSpeed=40, hp=59, armorclass=11,
 						   intelligence=5, wisdom=7, charisma=7)
 Ogre.SetWeapon(Greatclub)
 
-while Knight.CurrentHp > 0 and Ogre.CurrentHp > 0:
-	Knight.Attack(Ogre)
-	Ogre.Attack(Knight)
+#while Knight.CurrentHp > 0 and Ogre.CurrentHp > 0:
+#	Knight.Attack(Ogre)
+#	Ogre.Attack(Knight)
 
 Gameloop = Gameloop.Gameloop()
 Gameloop.run()

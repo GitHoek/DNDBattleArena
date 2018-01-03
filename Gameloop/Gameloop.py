@@ -19,8 +19,14 @@ class Gameloop(object):
 		self.ButtonSize_Height = 50
 		self.ButtonSize_Width = 100
 		self.Add_Character_Button_Height = 100
+		self.SmallText = pygame.font.Font("freesansbold.ttf",20)
+		self.gameDisplay = pygame.display.set_mode(self.size)
 		self.clock = pygame.time.Clock()
 		self.Create_View()
+
+	def text_objects(self,text, font):
+		textSurface = font.render(text, True, self.BLACK)
+		return textSurface, textSurface.get_rect()
 
 	def Create_View(self):
 		self.screen.fill(self.WHITE)
@@ -32,6 +38,11 @@ class Gameloop(object):
 		pygame.draw.rect(self.screen, self.WHITE, [self.size[0]-self.MenuSize, 0, self.MenuSize, self.size[1]],0)
 		self.grid = [[0 for x in range(int((self.size[0]-self.MenuSize)/self.Width))] for y in range(int(self.size[1]/self.Height))]
 		pygame.draw.rect(self.screen, self.GREEN, [self.size[0] - (self.MenuSize*8/10), self.Add_Character_Button_Height, (self.MenuSize*6/10), self.ButtonSize_Height], 0)
+		self.textSurf, self.textRect = self.text_objects("Add Character", self.SmallText)
+		self.textRect.center = (self.size[0] - (self.MenuSize*8/10) + (self.MenuSize*6/10)/2) , (self.Add_Character_Button_Height + (self.ButtonSize_Height/2))
+		self.gameDisplay.blit(self.textSurf, self.textRect)
+		pygame.display.update()
+
 
 	def Colour_Square_Blue(self, pos):
 		self.Create_View()
@@ -45,9 +56,11 @@ class Gameloop(object):
 		if hue is "DARK":
 			pygame.draw.rect(self.screen, self.DARK_GREEN,
 							 [self.size[0] - (self.MenuSize * 8 / 10), self.Add_Character_Button_Height, (self.MenuSize * 6 / 10), self.ButtonSize_Height], 0)
+			self.gameDisplay.blit(self.textSurf, self.textRect)
 		elif hue is "LIGHT":
 			pygame.draw.rect(self.screen, self.GREEN,
 							 [self.size[0] - (self.MenuSize * 8 / 10), self.Add_Character_Button_Height, (self.MenuSize * 6 / 10), self.ButtonSize_Height], 0)
+			self.gameDisplay.blit(self.textSurf, self.textRect)
 
 	def run(self):
 
@@ -72,7 +85,7 @@ class Gameloop(object):
 			Add_Character_Button_Y0 = self.Add_Character_Button_Height
 			Add_Character_Button_Y1 = self.Add_Character_Button_Height + self.ButtonSize_Height
 
-			if Mouse_x > Add_Character_Button_X0 and Mouse_x < Add_Character_Button_X1 and Mouse_y > Add_Character_Button_Y0 and Mouse_y < Add_Character_Button_Y1:
+			if Add_Character_Button_X0 < Mouse_x < Add_Character_Button_X1 and Add_Character_Button_Y0 < Mouse_y < Add_Character_Button_Y1:
 				self.Flicker_Add_Character_Button("DARK")
 			else:
 				self.Flicker_Add_Character_Button("LIGHT")
@@ -83,4 +96,3 @@ class Gameloop(object):
 			self.clock.tick(60)
 
 		pygame.quit()
-
