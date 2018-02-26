@@ -1,3 +1,5 @@
 .idea/vcs.xml
 .idea/workspace.xml
 Gameloop/__pycache__/Gameloop.cpython-36.pyc
+GameField/__pycache__/__init__.cpython-36.pyc
+GameField/__pycache__/GameField.cpython-36.pyc
