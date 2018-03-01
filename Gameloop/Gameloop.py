@@ -11,12 +11,13 @@ class Gameloop(object):
 
 	def run(self):
 
+		Map.Create_View()
 		Finished = False
 		while Finished is False:
 			# --- Main event loop
 			pos = pygame.mouse.get_pos()
 			Map.mousePos = pos
-			Map.Create_View()
+			Map.Update_view()
 
 			for event in pygame.event.get():  # User did something
 				if event.type == pygame.QUIT:  # If user clicked close

@@ -4,6 +4,9 @@ pygame.init()
 class GameField(object):
 	def __init__(self):
 		self.mousePos = (0,0)
+		self.currentMousePos = (-1,-1)
+		self.old_column = -1
+		self.old_row = -1
 		self.lmbClick = False
 		self.BLACK = (0, 0, 0)
 		self.WHITE = (255, 255, 255)
@@ -21,7 +24,6 @@ class GameField(object):
 		self.ButtonSize_Width = 100
 		self.Add_Character_Button_Height = 100
 		self.SmallText = pygame.font.Font("freesansbold.ttf",20)
-
 
 	def text_objects(self,text, font):
 		textSurface = font.render(text, True, self.BLACK)
@@ -42,13 +44,19 @@ class GameField(object):
 		self.textSurf, self.textRect = self.text_objects("Add Character", self.SmallText)
 		self.textRect.center = (self.size[0] - (self.MenuSize*8/10) + (self.MenuSize*6/10)/2) , (self.Add_Character_Button_Height + (self.ButtonSize_Height/2))
 		self.screen.blit(self.textSurf, self.textRect)
+
+	def Update_view(self):
 		self.Character_Button()
-		self.Colour_Square_Blue()
+
+		if(self.lmbClick):
+			self.currentMousePos = self.mousePos
+		self.Colour_Square_Blue(self.currentMousePos)
 
 
-	def Colour_Square_Blue(self):
-		column = self.mousePos[0]
-		row = self.mousePos[1]
+	def Colour_Square_Blue(self, mousePos):
+
+		column = mousePos[0]
+		row = mousePos[1]
 
 		column_leftover = column % 50
 		column -= column_leftover
@@ -56,8 +64,15 @@ class GameField(object):
 		row_leftover = row % 50
 		row -= row_leftover
 
-		# Debug prints
-		pygame.draw.rect(self.screen, self.BLUE, [column, row, self.Height, self.Width], 0)
+		if (self.old_column < (self.size[0] - self.MenuSize)):
+			pygame.draw.rect(self.screen, self.WHITE, [self.old_column, self.old_row, self.Height, self.Width], 0)
+			pygame.draw.rect(self.screen, self.BLACK, [self.old_column, self.old_row, self.Height, self.Width], 1)
+
+		if(column < (self.size[0] - self.MenuSize)):
+			pygame.draw.rect(self.screen, self.BLUE, [column, row, self.Height, self.Width], 0)
+
+		self.old_column = column
+		self.old_row = row
 
 
 	def Flicker_Add_Character_Button(self,hue):
